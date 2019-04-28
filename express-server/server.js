@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // We should probably a .then and a .catch, but I didn't bother
-mongoose.connect('mongodb://database:27017/ims', { useNewUrlParser: true });
+mongoose.connect('mongodb://database:27017/training', { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 
 // Because angular is hosted on a separate server, angular will be hosted together on production run
