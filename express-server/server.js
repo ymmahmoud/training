@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const request = require('request');
 const app = express();
 const port = 3000;
 
@@ -20,6 +21,22 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
+
+app.post('/user/info', (req, res) => {
+    if(req.body['id'] != null){
+        const request_url = 'https://oauth2.googleapis.com/tokeninfo?id_token=' + req.body['id'];
+        request(request_url, (err, response, body) => {
+            if(!err) {
+                const user = JSON.parse(body);
+                res.send({sucess:true, usr:user.email, msg:"User sucessfully verified!"});
+            }else{
+                res.send({sucess:false, usr:null, msg:"Unable to verify token!"});
+            }
+        });
+    }else{
+        res.send({sucess:false, usr:null, msg:"No ID token specified!"});
+    }
+});
 
 app.get('/', (req, res) => res.send('Hello World123!'))
 
