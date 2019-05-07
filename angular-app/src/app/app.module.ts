@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CreatechecklistComponent } from './createchecklist/createchecklist.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const config = new AuthServiceConfig([
   {
@@ -21,13 +23,15 @@ export function provideConfig() {
 @NgModule({
   declarations: [
     AppComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    CreatechecklistComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     SocialLoginModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [{
     provide: AuthServiceConfig,
