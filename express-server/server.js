@@ -2,18 +2,20 @@ const express = require('express');
 //needed for cors, will remove in production
 const cors = require('cors');
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
+const mariadb = require("mariadb");
 const request = require('request');
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// We should probably a .then and a .catch, but I didn't bother
-mongoose.connect('mongodb://database:27017/training', { useNewUrlParser: true });
-mongoose.Promise = global.Promise;
-
+const pool = mariadb.createPool({
+    host: 'database', 
+    user:'root', 
+    password: 'root',
+    database: 'training',
+    connectionLimit: 5
+});
 // Because angular is hosted on a separate server, angular will be hosted together on production run
 var corsOptions = {
     origin: 'http://localhost:4200',
