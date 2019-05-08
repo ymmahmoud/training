@@ -18,10 +18,13 @@ export class LandingPageComponent implements OnInit {
     this.authService.authState.subscribe((user) => {
       this.user = user;
       // Prevents sending a request that is invalid
-      if (user.hasOwnProperty('idToken') != null) {
+      if (user != null && user.hasOwnProperty('idToken') != null) {
         this.userService.getInfo(user.idToken).subscribe((verifiedUser) => {
           console.log(verifiedUser);
         });
+        localStorage.setItem('id_token', user.idToken);
+      } else {
+        localStorage.removeItem('id_token');
       }
     });
   }
