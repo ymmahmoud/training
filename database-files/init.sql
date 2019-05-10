@@ -27,8 +27,7 @@ CREATE TABLE IF NOT EXISTS `training`.`users` (
   `active` TINYINT NOT NULL,
   `admin` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `googleUserId_UNIQUE` (`googleUserId` ASC) VISIBLE)
-ENGINE = XtraDB;
+  UNIQUE KEY (`googleUserId` ASC));
 
 
 -- -----------------------------------------------------
@@ -39,9 +38,8 @@ CREATE TABLE IF NOT EXISTS `training`.`emsCerts` (
   `name` VARCHAR(255) NOT NULL,
   `abbr` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
-  UNIQUE INDEX `abbr_UNIQUE` (`abbr` ASC) VISIBLE)
-ENGINE = XtraDB;
+  UNIQUE KEY (`name`),
+  UNIQUE KEY (`abbr`));
 
 
 -- -----------------------------------------------------
@@ -51,8 +49,7 @@ CREATE TABLE IF NOT EXISTS `training`.`otherCerts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `org` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`))
-ENGINE = XtraDB;
+  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -63,7 +60,6 @@ CREATE TABLE IF NOT EXISTS `training`.`usersEmsCerts` (
   `emsCertId` INT UNSIGNED NOT NULL,
   `expiration` DATETIME NOT NULL,
   PRIMARY KEY (`userId`, `emsCertId`),
-  INDEX `id_idx` (`emsCertId` ASC) VISIBLE,
   CONSTRAINT `FK_emsCert`
     FOREIGN KEY (`emsCertId`)
     REFERENCES `training`.`emsCerts` (`id`)
@@ -73,8 +69,7 @@ CREATE TABLE IF NOT EXISTS `training`.`usersEmsCerts` (
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -84,7 +79,6 @@ CREATE TABLE IF NOT EXISTS `training`.`usersOtherCerts` (
   `userId` INT UNSIGNED NOT NULL,
   `otherCertId` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`userId`, `otherCertId`),
-  INDEX `id_idx` (`otherCertId` ASC) VISIBLE,
   CONSTRAINT `FK_userOtherCert`
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
@@ -94,8 +88,7 @@ CREATE TABLE IF NOT EXISTS `training`.`usersOtherCerts` (
     FOREIGN KEY (`otherCertId`)
     REFERENCES `training`.`otherCerts` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -106,9 +99,8 @@ CREATE TABLE IF NOT EXISTS `training`.`credentials` (
   `name` VARCHAR(255) NOT NULL,
   `abbr` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC) VISIBLE,
-  UNIQUE INDEX `abbr_UNIQUE` (`abbr` ASC) VISIBLE)
-ENGINE = XtraDB;
+  UNIQUE KEY (`name`),
+  UNIQUE KEY (`abbr`));
 
 
 -- -----------------------------------------------------
@@ -129,8 +121,7 @@ CREATE TABLE IF NOT EXISTS `training`.`usersCredentials` (
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -146,8 +137,7 @@ CREATE TABLE IF NOT EXISTS `training`.`checklistItems` (
     FOREIGN KEY (`credentialId`)
     REFERENCES `training`.`credentials` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -159,7 +149,6 @@ CREATE TABLE IF NOT EXISTS `training`.`usersChecklistItems` (
   `trainer` INT UNSIGNED NOT NULL,
   `date` DATETIME NOT NULL,
   PRIMARY KEY (`userId`, `checklistItemId`),
-  INDEX `id_idx` (`trainer` ASC) VISIBLE,
   CONSTRAINT `FK_userChecklistItem`
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
@@ -174,8 +163,7 @@ CREATE TABLE IF NOT EXISTS `training`.`usersChecklistItems` (
     FOREIGN KEY (`trainer`)
     REFERENCES `training`.`users` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -188,13 +176,11 @@ CREATE TABLE IF NOT EXISTS `training`.`driversLicenses` (
   `state` VARCHAR(255) NULL,
   `expiration` DATETIME NULL,
   PRIMARY KEY (`id`),
-  INDEX `id_idx` (`userId` ASC) VISIBLE,
   CONSTRAINT `FK_userDriversLicense`
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -209,9 +195,6 @@ CREATE TABLE IF NOT EXISTS `training`.`evals` (
   `comments` TEXT NULL,
   `passed` TINYINT NOT NULL,
   PRIMARY KEY (`id`, `credential`),
-  INDEX `id_idx` (`credential` ASC) VISIBLE,
-  INDEX `id_idx1` (`trainer` ASC) VISIBLE,
-  INDEX `id_idx2` (`trainee` ASC) VISIBLE,
   CONSTRAINT `FK_evalTrainee`
     FOREIGN KEY (`trainee`)
     REFERENCES `training`.`users` (`id`)
@@ -226,8 +209,7 @@ CREATE TABLE IF NOT EXISTS `training`.`evals` (
     FOREIGN KEY (`credential`)
     REFERENCES `training`.`credentials` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -237,8 +219,7 @@ CREATE TABLE IF NOT EXISTS `training`.`evalItems` (
   `id` INT UNSIGNED NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `gradingType` SMALLINT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = XtraDB;
+  PRIMARY KEY (`id`));
 
 
 -- -----------------------------------------------------
@@ -250,7 +231,6 @@ CREATE TABLE IF NOT EXISTS `training`.`usersEvalItems` (
   `score` INT NOT NULL,
   `comments` TEXT NULL,
   PRIMARY KEY (`userid`, `evalItemId`),
-  INDEX `id_idx` (`evalItemId` ASC) VISIBLE,
   CONSTRAINT `FK_userEvalItem`
     FOREIGN KEY (`userid`)
     REFERENCES `training`.`users` (`id`)
@@ -260,8 +240,7 @@ CREATE TABLE IF NOT EXISTS `training`.`usersEvalItems` (
     FOREIGN KEY (`evalItemId`)
     REFERENCES `training`.`evalItems` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -274,8 +253,6 @@ CREATE TABLE IF NOT EXISTS `training`.`promoRequests` (
   `approved` TINYINT NULL,
   `comments` TEXT NULL,
   PRIMARY KEY (`id`, `userId`, `credentialId`),
-  INDEX `id_idx` (`userId` ASC) VISIBLE,
-  INDEX `id_idx1` (`credentialId` ASC) VISIBLE,
   CONSTRAINT `FK_promoRequestUser`
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
@@ -285,8 +262,7 @@ CREATE TABLE IF NOT EXISTS `training`.`promoRequests` (
     FOREIGN KEY (`credentialId`)
     REFERENCES `training`.`credentials` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -298,7 +274,6 @@ CREATE TABLE IF NOT EXISTS `training`.`promoRequestVotes` (
   `vote` TINYINT NOT NULL,
   `comments` TEXT NULL,
   PRIMARY KEY (`promoRequestId`, `userId`),
-  INDEX `id_idx` (`userId` ASC) VISIBLE,
   CONSTRAINT `FK_promoRequest`
     FOREIGN KEY (`promoRequestId`)
     REFERENCES `training`.`promoRequests` (`id`)
@@ -308,8 +283,7 @@ CREATE TABLE IF NOT EXISTS `training`.`promoRequestVotes` (
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -322,13 +296,11 @@ CREATE TABLE IF NOT EXISTS `training`.`positions` (
   `startDate` DATETIME NOT NULL,
   `endDate` DATETIME NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `id_idx` (`userId` ASC) VISIBLE,
   CONSTRAINT `FK_userPosition`
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION);
 
 
 -- -----------------------------------------------------
@@ -343,10 +315,6 @@ CREATE TABLE IF NOT EXISTS `training`.`proxyVoters` (
   `complete` TINYINT NOT NULL,
   `promoRequestId` INT UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `id_idx` (`userId` ASC) VISIBLE,
-  INDEX `id_idx1` (`tcChair` ASC) VISIBLE,
-  INDEX `id_idx2` (`proxyFor` ASC) VISIBLE,
-  INDEX `FK_proxyPromoRequest_idx` (`promoRequestId` ASC) VISIBLE,
   CONSTRAINT `FK_userProxyVoter`
     FOREIGN KEY (`userId`)
     REFERENCES `training`.`users` (`id`)
@@ -366,8 +334,7 @@ CREATE TABLE IF NOT EXISTS `training`.`proxyVoters` (
     FOREIGN KEY (`promoRequestId`)
     REFERENCES `training`.`promoRequests` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = XtraDB;
+    ON UPDATE NO ACTION)  ;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
