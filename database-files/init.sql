@@ -22,12 +22,12 @@ USE `training` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `training`.`users` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `googleUserId` INT NOT NULL,
+  `googleUserId` VARCHAR(25) NOT NULL,
   `radioNum` INT UNSIGNED NULL,
   `active` TINYINT NOT NULL,
   `admin` TINYINT NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY (`googleUserId` ASC));
+  UNIQUE KEY (`googleUserId`));
 
 
 -- -----------------------------------------------------

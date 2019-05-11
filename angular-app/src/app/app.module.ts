@@ -8,6 +8,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CreatechecklistComponent } from './createchecklist/createchecklist.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const config = new AuthServiceConfig([
   {
@@ -24,7 +25,8 @@ export function provideConfig() {
   declarations: [
     AppComponent,
     LandingPageComponent,
-    CreatechecklistComponent
+    CreatechecklistComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

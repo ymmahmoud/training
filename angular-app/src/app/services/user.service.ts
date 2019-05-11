@@ -9,8 +9,11 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  // We should switch this out with a Observable<User> once we know more about the user object
-  getInfo(userID: string): Observable<any> {
-    return this.http.post('http://localhost:3000/user/info', {id: userID});
+  verifyUser(userToken: string): Observable<any> {
+    return this.http.post('http://localhost:3000/user/verify', {token: userToken});
+  }
+
+  createUser(id: string): Observable<any> {
+    return this.http.post('http://localhost:3000/user/create', {id});
   }
 }
