@@ -2,20 +2,15 @@ const express = require('express');
 //needed for cors, will remove in production
 const cors = require('cors');
 const bodyParser = require("body-parser");
-const mariadb = require("mariadb");
-const request = require('request');
 const app = express();
 const port = 3000;
+const { pool } = require('./database.js');
+const { verifyToken, createUser } = require('./UserFunctions.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-const pool = mariadb.createPool({
-    host: 'database', 
-    user:'root', 
-    password: 'root',
-    database: 'training',
-    connectionLimit: 5
-});
+// Export the connection information to use elsewhere
+module.exports = { pool };
 // Because angular is hosted on a separate server, angular will be hosted together on production run
 var corsOptions = {
     origin: 'http://localhost:4200',
@@ -24,19 +19,16 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.post('/user/info', (req, res) => {
-    if(req.body['id'] != null){
-        const request_url = 'https://oauth2.googleapis.com/tokeninfo?id_token=' + req.body['id'];
-        request(request_url, (err, response, body) => {
-            if(!err) {
-                const user = JSON.parse(body);
-                res.send({sucess:true, usr:user.email, msg:"User sucessfully verified!"});
-            }else{
-                res.send({sucess:false, usr:null, msg:"Unable to verify token!"});
-            }
-        });
-    }else{
-        res.send({sucess:false, usr:null, msg:"No ID token specified!"});
+app.post('/user/info', async (req, res) => {
+    if(req.body['id'] != null) {
+        const user = await verifyToken(req.body['id']);
+        if (user) {
+            res.send({sucess: true, user: user, message: "Succesfully verified token!"});
+        }else {
+            res.send({sucess: false, user: user, message: "Unable to verify token!"});
+        }
+    }else {
+        res.send({sucess: false, user: null, message: "Token not specified!"});
     }
 });
 
@@ -62,6 +54,7 @@ app.post('/checklist/create', async (req, res) => {
         res.send({success: sucess, msg: message});
     }
 });
+
 
 app.get('/', (req, res) => res.send('Hello World123!'))
 
