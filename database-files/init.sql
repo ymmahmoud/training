@@ -102,6 +102,20 @@ CREATE TABLE IF NOT EXISTS `training`.`credentials` (
   UNIQUE KEY (`name`),
   UNIQUE KEY (`abbr`));
 
+INSERT INTO credentials (name, abbr) VALUES ('Duty Supervisor', 'DS');
+INSERT INTO credentials (name, abbr) VALUES ('Emergency Event Supervisor', 'EES');
+INSERT INTO credentials (name, abbr) VALUES ('Crew Chief Trainer', 'CCT');
+INSERT INTO credentials (name, abbr) VALUES ('Crew Chief', 'CC');
+INSERT INTO credentials (name, abbr) VALUES ('Probationary Crew Chief', 'PCC');
+INSERT INTO credentials (name, abbr) VALUES ('First Reponse Crew Chief', 'FRCC');
+INSERT INTO credentials (name, abbr) VALUES ('Cleared Crew Chief', 'ACC');
+INSERT INTO credentials (name, abbr) VALUES ('Driver Trainer', 'DT');
+INSERT INTO credentials (name, abbr) VALUES ('Driver', 'D');
+INSERT INTO credentials (name, abbr) VALUES ('Probationary Driver', 'PD');
+INSERT INTO credentials (name, abbr) VALUES ('Cleared Driver', 'AD');
+INSERT INTO credentials (name, abbr) VALUES ('Attendant', 'A');
+INSERT INTO credentials (name, abbr) VALUES ('Observer', 'O');
+
 
 -- -----------------------------------------------------
 -- Table `training`.`usersCredentials`

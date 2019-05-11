@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, FormArray, ValidatorFn} from '@angular/forms';
 import { Checklist } from '../models/checklist';
+import { ChecklistService } from '../services/checklist.service';
 
 @Component({
   selector: 'app-createchecklist',
@@ -9,8 +10,8 @@ import { Checklist } from '../models/checklist';
 })
 export class CreatechecklistComponent implements OnInit {
   createChecklistForm: FormGroup;
+  alert: any = {class: '', message: ''};
   roles = [
-    {val: 'ds', name: 'Duty Supervisor'},
     {val: 'ees', name: 'Emergency Event Supervisor'},
     {val: 'cct', name: 'Crew Chief Trainer'},
     {val: 'cc', name: 'Crew Chief'},
@@ -21,14 +22,12 @@ export class CreatechecklistComponent implements OnInit {
     {val: 'pd', name: 'Probationary Driver'},
     {val: 'a', name: 'Attendant'}
   ];
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private checklistService: ChecklistService) {
     this.createChecklistForm = this.fb.group({
-      title: ['', Validators.required],
+      role: ['', Validators.required],
       items: this.fb.array([]),
-      roles: this.fb.array([], minSelectedCheckboxes(1))
     });
     this.createItemControl();
-    this.addCheckboxes();
   }
 
   ngOnInit() {
@@ -43,40 +42,19 @@ export class CreatechecklistComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.createChecklistForm);
-    const title = this.createChecklistForm.controls.title.value;
-    const checkboxes = (this.createChecklistForm.controls.roles as FormArray).controls;
-    const selectedRoles = [];
-    for (let i = 0; i < checkboxes.length; i++) {
-      if (checkboxes[i].value) {
-        selectedRoles.push(this.roles[i].val);
-      }
-    }
+    const role = this.createChecklistForm.controls.role.value;
     const items = (this.createChecklistForm.controls.items as FormArray).controls.map(item => item.value);
-    const checklist = new Checklist(title, items, selectedRoles);
-    // Server request goes here
-    console.log(checklist);
-  }
-
-  private addCheckboxes(): void {
-    this.roles.map((o, i) => {
-      (this.createChecklistForm.controls.roles as FormArray).push(new FormControl(false));
+    const submittedChecklist: Checklist = new Checklist(role, items);
+    this.checklistService.createChecklist(submittedChecklist).subscribe((response) => {
+      console.log(response);
+      /* tslint:disable:no-string-literal */
+      // Constructs the alert object to display to the user
+      if (response['success'] ) {
+        this.alert = {class: 'alert alert-success', message: response['msg']};
+      } else {
+        this.alert = {class: 'alert alert-danger', message: response['msg']};
+      }
+      /* tslint:enable:no-string-literal */
     });
   }
-}
-
-// Thanks to https://coryrylan.com/blog/creating-a-dynamic-checkbox-list-in-angular for this validator
-function minSelectedCheckboxes(min = 1) {
-  const validator: ValidatorFn = (formArray: FormArray) => {
-    const totalSelected = formArray.controls
-      // get a list of checkbox values (boolean)
-      .map(control => control.value)
-      // total up the number of checked checkboxes
-      .reduce((prev, next) => next ? prev + next : prev, 0);
-
-    // if the total is not greater than the minimum, return the error message
-    return totalSelected >= min ? null : { required: true };
-  };
-
-  return validator;
 }

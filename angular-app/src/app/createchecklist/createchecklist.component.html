@@ -1,9 +1,15 @@
 <div class="container">   
+  <div [hidden]="alert.message === ''" [class]="alert.class" role="alert">
+    {{alert.message}}
+  </div>
   <form [formGroup]="createChecklistForm" (ngSubmit)="onSubmit()">
     <label>
-      Checklist Name:
-      <input type="text" formControlName="title"/>
+      Checklist Role:
+      <select formControlName="role">
+        <option *ngFor="let r of roles" [value]="r.val">{{r.name}}</option>
+      </select>
     </label>
+    <br/>
     <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Add one more row to the checklist" (click)="createItemControl()">Add Item</button>
     <div id="box" formArrayName="items" *ngFor="let item of createChecklistForm.get('items').controls; let i = index;">
         <div class="form-row">
@@ -15,12 +21,6 @@
           </div>            
         </div>
     </div>
-    <h4>Please select who you wish to be able to check off this checklist</h4>
-    <label class="roles" formArrayName="roles" *ngFor="let role of createChecklistForm.get('roles').controls; let i = index">
-        <input type="checkbox" [formControlName]="i">
-        {{roles[i].name}}
-    </label>
-    <br/>
     <button class="btn btn-success" type="submit" [disabled]="!createChecklistForm.valid">Submit</button>
   </form>
 </div>

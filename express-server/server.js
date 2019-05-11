@@ -40,6 +40,29 @@ app.post('/user/info', (req, res) => {
     }
 });
 
+app.post('/checklist/create', async (req, res) => {
+    let message = "";
+    let success = true;
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const credID = await conn.query("SELECT id FROM credentials WHERE abbr = ?", req.body.role);
+        for (item of req.body.items) {
+            await conn.query("INSERT INTO checklistItems (credentialId, text, active) VALUES (?, ?, ?)", [credID[0].id, item, 1]);
+        }
+        sucess = true;
+        message = "Successfully created checklist!";
+    } catch (err) {
+        sucess = false;
+        message = err + "\n If you believe this is incorrect please contact the dev team!";
+    } finally {
+        if (conn){
+            conn.end();
+        }
+        res.send({success: sucess, msg: message});
+    }
+});
+
 app.get('/', (req, res) => res.send('Hello World123!'))
 
 app.listen(port, '0.0.0.0', () => console.log(`Training app listening on port ${port}!`))
