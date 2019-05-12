@@ -161,8 +161,6 @@ CREATE TABLE IF NOT EXISTS `training`.`checklistItems` (
   `sectionId` INT UNSIGNED NOT NULL,
   `text` VARCHAR(255) NOT NULL,
   `active` TINYINT NOT NULL,
-  `range` TINYINT NOT NULL,
-  `totalUnitsNeeded` INT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_checklistItemCredential`
     FOREIGN KEY (`credentialId`)
@@ -183,8 +181,10 @@ CREATE TABLE IF NOT EXISTS `training`.`checklistItems` (
 CREATE TABLE IF NOT EXISTS `training`.`usersChecklistItems` (
   `userId` INT UNSIGNED NOT NULL,
   `checklistItemId` INT UNSIGNED NOT NULL,
-  `trainer` INT UNSIGNED NOT NULL,
-  `date` DATETIME NOT NULL,
+  `comments` TEXT NULL,
+  `status` TINYINT NOT NULL,
+  `trainer` INT UNSIGNED NULL,
+  `date` DATETIME NULL,
   PRIMARY KEY (`userId`, `checklistItemId`),
   CONSTRAINT `FK_userChecklistItem`
     FOREIGN KEY (`userId`)
