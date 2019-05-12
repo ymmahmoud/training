@@ -143,12 +143,7 @@ CREATE TABLE IF NOT EXISTS `training`.`usersCredentials` (
 CREATE TABLE IF NOT EXISTS `training`.`sections` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`)
-  CONSTRAINT `FK_credentialId`
-    FOREIGN KEY (`credentialId`)
-    REFERENCES `training`.`credentials` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id`));
 
 
 
@@ -171,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `training`.`checklistItems` (
     FOREIGN KEY (`sectionId`)
     REFERENCES `training`.`sections` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION);
 
 
 
