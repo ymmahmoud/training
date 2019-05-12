@@ -57,7 +57,7 @@ export const navItems: NavData[] = [
   {
     name: 'Promotions',
     url: '/dashboard',
-    icon: 'fa fa-certificate',
+    icon: 'fa fa-shield',
     children: [
       {
         name: 'Apply for Promotion',
