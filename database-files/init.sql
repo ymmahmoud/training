@@ -137,6 +137,20 @@ CREATE TABLE IF NOT EXISTS `training`.`usersCredentials` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
+-- -----------------------------------------------------
+-- Table `training`.`sections`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `training`.`sections` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`)
+  CONSTRAINT `FK_credentialId`
+    FOREIGN KEY (`credentialId`)
+    REFERENCES `training`.`credentials` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
+
 
 -- -----------------------------------------------------
 -- Table `training`.`checklistItems`
@@ -144,14 +158,23 @@ CREATE TABLE IF NOT EXISTS `training`.`usersCredentials` (
 CREATE TABLE IF NOT EXISTS `training`.`checklistItems` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `credentialId` INT UNSIGNED NOT NULL,
+  `sectionId` INT UNSIGNED NOT NULL,
   `text` VARCHAR(255) NOT NULL,
   `active` TINYINT NOT NULL,
+  `range` TINYINT NOT NULL,
+  `totalUnitsNeeded` INT NULL,
   PRIMARY KEY (`id`),
   CONSTRAINT `FK_checklistItemCredential`
     FOREIGN KEY (`credentialId`)
     REFERENCES `training`.`credentials` (`id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_section`
+    FOREIGN KEY (`sectionId`)
+    REFERENCES `training`.`sections` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+
 
 
 -- -----------------------------------------------------
@@ -354,4 +377,3 @@ CREATE TABLE IF NOT EXISTS `training`.`proxyVoters` (
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
