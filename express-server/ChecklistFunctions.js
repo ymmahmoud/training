@@ -26,7 +26,7 @@ const getChecklistTemplates = async () => {
                 checklist.sections.push(section);
                 section = {name: item.section, items: []};
             }
-            section.items.push(item.text);
+            section.items.push(item);
         }
         // Push the stuff at the end
         checklist.sections.push(section);
@@ -42,9 +42,45 @@ const getChecklistTemplates = async () => {
     }
 };
 
-const updateChecklist = async (id) => {
-
+createUserChecklists = async (userId) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const items = await conn.query("SELECT id FROM checklistItems WHERE active = 1;");
+        delete items.meta;
+        for (const item of items){
+            conn.query("INSERT INTO usersChecklistItems(userId, checklistItemId, status) VALUES (?, ?, ?)", [userId, item.id, 0]);
+        }
+    } catch (err) {
+        console.error(err);
+        return null;
+    } finally {
+        if (conn) {
+            conn.end();
+        }
+    }
 };
 
+updateChecklists = async (credId, itemIds) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const users = await conn.query("SELECT id FROM users WHERE id NOT IN (SELECT userId FROM usersCredentials WHERE credentialId = ?)", credId);
+        delete users.meta;
+        for (user of users){
+            for(itemId of itemIds){
+                conn.query("INSERT INTO usersChecklistItems(userId, checklistItemId, status) VALUES (?, ?, ?)", [user.id, itemId, 0]);
+            }
+        }
+    } catch (err) {
+        console.error(err);
+        return null;
+    } finally {
+        if (conn) {
+            conn.end();
+        }
+    }
+}
 
-module.exports = { getChecklistTemplates };
+
+module.exports = { getChecklistTemplates, createUserChecklists, updateChecklists };

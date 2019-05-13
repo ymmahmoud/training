@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 const { pool } = require('./database.js');
 const { verifyToken, createUser, getUserInfo} = require('./UserFunctions.js');
-const { getChecklistTemplates } = require ('./ChecklistFunctions.js');
+const { getChecklistTemplates, updateChecklists } = require ('./ChecklistFunctions.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -61,6 +61,8 @@ app.post('/checklist/create', async (req, res) => {
     let success = true;
     let conn;
     try {
+        // We will put all the newly inserted item ids in here so we can then update the user's checklists
+        const itemIds = [];
         conn = await pool.getConnection();
         const credID = (await conn.query("SELECT id FROM credentials WHERE abbr = ?", req.body.role))[0].id;
         for (const section of req.body.sections) {
@@ -68,8 +70,10 @@ app.post('/checklist/create', async (req, res) => {
             const sectionID = (await conn.query("SELECT LAST_INSERT_ID() as id;"))[0].id;
             for (const item of section.items) {
                 await conn.query("INSERT INTO checklistItems (credentialId, sectionId, text, active) VALUES (?, ?, ?, ?);", [credID, sectionID, item, 1]);
+                itemIds.push((await conn.query("SELECT LAST_INSERT_ID() as id;"))[0].id);
             }
         }
+        updateChecklists(credID, itemIds);
         success = true;
         message = "Successfully created checklist!";
     } catch (err) {

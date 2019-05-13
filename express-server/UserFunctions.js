@@ -1,4 +1,5 @@
 const { pool }  = require( "./database.js");
+const { createUserChecklists } = require("./ChecklistFunctions.js");
 const cachios = require('cachios');
 const PERSON_API_TOKEN = process.env.PERSON_API_TOKEN;
 
@@ -32,6 +33,7 @@ const createUser = async (id) => {
         if (user.length == 0) {
             await conn.query("INSERT INTO users (googleUserId, radioNum, active, admin) VALUES (?, ?, ?, ?)", [id, null, 1, 0]);
             user = await conn.query("SELECT * FROM users WHERE googleUserId = ? LIMIT 1", id);
+            await createUserChecklists(user[0].id);
         }
         delete user.meta;
         return user;
