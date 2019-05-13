@@ -62,9 +62,13 @@ app.post('/checklist/create', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
-        const credID = await conn.query("SELECT id FROM credentials WHERE abbr = ?", req.body.role);
-        for (item of req.body.items) {
-            await conn.query("INSERT INTO checklistItems (credentialId, text, active) VALUES (?, ?, ?)", [credID[0].id, item, 1]);
+        const credID = (await conn.query("SELECT id FROM credentials WHERE abbr = ?", req.body.role))[0].id;
+        for (const section of req.body.sections) {
+            await conn.query("INSERT INTO sections (name) VALUES (?);", section.name);
+            const sectionID = (await conn.query("SELECT LAST_INSERT_ID() as id;"))[0].id;
+            for (const item of section.items) {
+                await conn.query("INSERT INTO checklistItems (credentialId, sectionId, text, active) VALUES (?, ?, ?, ?);", [credID, sectionID, item, 1]);
+            }
         }
         success = true;
         message = "Successfully created checklist!";

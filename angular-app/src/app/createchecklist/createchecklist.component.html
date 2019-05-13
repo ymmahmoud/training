@@ -10,16 +10,19 @@
       </select>
     </label>
     <br/>
-    <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Add one more row to the checklist" (click)="createItemControl()">Add Item</button>
-    <div id="box" formArrayName="items" *ngFor="let item of createChecklistForm.get('items').controls; let i = index;">
-        <div class="form-row">
-          <div class="col col-md-5">
-            <input class="form-control form-control-lg rounded" [formControlName]="i" placeholder="Item name" required>
-          </div>
-          <div class="col col-md-2">
-            <button *ngIf="i != 0" type="button" class="btn btn-danger" (click)="removeItem(i)">X</button>
-          </div>            
+    <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Add a section to the checklist" (click)="addSection()">Add Section</button>
+    <div formArrayName="sections" *ngFor="let section of createChecklistForm.get('sections').controls; let i = index;">
+      <button *ngIf="i != 0" type="button" class="btn btn-danger" (click)="removeSection(i)">Remove Section</button>
+      <div class="form-row">
+        <input class="form-control form-control-lg rounded" [formControl]="section.controls.title" type="text" placeholder="Section Title" required/>
+      </div>
+      <button type="button" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Adds another item field for the section" (click)="addItem(i)">Add Item</button>
+      <div class="form-row">
+        <div *ngFor="let item of section.get('items').controls; let j = index;">
+            <input class="form-control form-control-lg rounded" [formControl]="item" type="text" placeholder="Item Name" required/>
+            <button *ngIf="j != 0" type="button" class="btn btn-danger" (click)="removeItem(i,j)">X</button>
         </div>
+      </div>
     </div>
     <button class="btn btn-success" type="submit" [disabled]="!createChecklistForm.valid">Submit</button>
   </form>

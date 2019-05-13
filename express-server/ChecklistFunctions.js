@@ -5,24 +5,31 @@ const getChecklistTemplates = async () => {
     let conn;
     try {
         conn = await pool.getConnection();
-        let items = await conn.query("SELECT checklistItems.id, text, active, credentials.name from checklistItems\
+        const items = await conn.query("SELECT checklistItems.id, text, active, credentials.name as credential, sections.name as section from checklistItems\
         LEFT JOIN credentials ON credentials.id = checklistItems.credentialId\
-        WHERE active = 1 ORDER BY credentials.name;");
+        LEFT JOIN sections ON sectionId = sections.id WHERE active = 1\
+        ORDER BY credentials.name, sections.name;");
         // Get rid of metadata as we just don't care
         delete items.meta;
-        let checklist = {role: items[0].name, items: []};
-        let currentRole = items[0].name;
-        for (const item of items) {
-            // New checklist since they're grouped :)
-            if (item.name !== currentRole){
+        let checklist = {role: items[0].credential, sections: []};
+        let section = {name: items[0].section, items: []};
+        for (const item of items){
+            // We make a new checklist object if the roles differ
+            if (item.credential != checklist.role){
+                checklist.sections.push(section);
                 checklists.push(checklist);
-                checklist = {role: item.name, items: []};
-                currentRole = item.name;
+                checklist = {role: item.credential, sections: []};
+                section = {name: item.section, items: []};
             }
-            // We used the name now we don't need anymore
-            delete item.name;
-            checklist.items.push(item);
+            // If the section is different we create a new one
+            if (item.section != section.name){
+                checklist.sections.push(section);
+                section = {name: item.section, items: []};
+            }
+            section.items.push(item.text);
         }
+        // Push the stuff at the end
+        checklist.sections.push(section);
         checklists.push(checklist);
         return checklists;
     } catch (err) {

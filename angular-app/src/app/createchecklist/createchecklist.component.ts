@@ -25,28 +25,55 @@ export class CreatechecklistComponent implements OnInit {
   constructor(private fb: FormBuilder, private checklistService: ChecklistService) {
     this.createChecklistForm = this.fb.group({
       role: ['', Validators.required],
-      items: this.fb.array([]),
+      sections: this.fb.array([]),
     });
-    this.createItemControl();
   }
 
   ngOnInit() {
   }
 
-  createItemControl(): void {
-    (this.createChecklistForm.controls.items as FormArray).push(new FormControl('', Validators.required));
+  addSection(): void {
+    const section: FormGroup = this.fb.group({
+      title: ['', Validators.required],
+      items: this.fb.array([this.fb.control('', Validators.required)])
+    });
+    (this.createChecklistForm.controls.sections as FormArray).push(section);
+  }
+  // Adds an item to the section based on index
+  addItem(index: number): void {
+    const sections = (this.createChecklistForm.controls.sections as FormArray).controls as Array<FormGroup>;
+    const currentItems = sections[index].controls.items as FormArray;
+    currentItems.push(new FormControl('', Validators.required));
   }
 
-  removeItem(index: number): void {
-    (this.createChecklistForm.controls.items as FormArray).removeAt(index);
+  // Removes the item from that particular section
+  removeSection(sectionIndex: number): void {
+    const sections = (this.createChecklistForm.controls.sections as FormArray);
+    sections.removeAt(sectionIndex);
+  }
+
+  // Removes that item from the particular section
+  removeItem(sectionIndex: number, itemIndex: number): void {
+    const sections = (this.createChecklistForm.controls.sections as FormArray).controls as Array<FormGroup>;
+    const currentItems = sections[sectionIndex].controls.items as FormArray;
+    currentItems.removeAt(itemIndex);
   }
 
   onSubmit(): void {
     const role = this.createChecklistForm.controls.role.value;
-    const items = (this.createChecklistForm.controls.items as FormArray).controls.map(item => item.value);
-    const submittedChecklist: Checklist = new Checklist(role, items);
+    const formSections = (this.createChecklistForm.controls.sections as FormArray).controls as Array<FormGroup>;
+    const checklistSections = [];
+    // A bunch of magic to get the forms inputs into a nice checklist object
+    for (const formSection of formSections) {
+      const checklistSection = {name: formSection.controls.title.value, items: []};
+      const items = (formSection.controls.items as FormArray).controls as Array<FormControl>;
+      for (const item of items){
+        checklistSection.items.push(item.value);
+      }
+      checklistSections.push(checklistSection);
+    }
+    const submittedChecklist = new Checklist(role, checklistSections);
     this.checklistService.createChecklist(submittedChecklist).subscribe((response) => {
-      console.log(response);
       /* tslint:disable:no-string-literal */
       // Constructs the alert object to display to the user
       if (response['success'] ) {
