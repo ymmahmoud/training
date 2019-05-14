@@ -6,8 +6,8 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 const { pool } = require('./database.js');
-const { verifyToken, createUser, getUserInfo} = require('./UserFunctions.js');
-const { getChecklistTemplates, updateChecklists } = require ('./ChecklistFunctions.js');
+const { verifyToken, createUser, getUserInfo, findUser} = require('./UserFunctions.js');
+const { getChecklistTemplates, updateChecklists, getUserChecklist } = require ('./ChecklistFunctions.js');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -89,6 +89,25 @@ app.post('/checklist/create', async (req, res) => {
 
 app.get('/checklist/templates', async (req, res) => {
     res.send(await getChecklistTemplates());
+});
+
+app.post('/checklist/user', async (req, res) => {
+    if(req.body['token'] && req.body['credential']){
+        const user = await verifyToken(req.body.token);
+        if (user) {
+            const userId = (await findUser(user.sub))[0].id;
+            const checklist = await getUserChecklist(userId, req.body['credential']);
+            if (checklist){
+                res.send({success: true, checklist: checklist, message: "Succesfully retrieved checklist!"}); 
+            }else{
+                res.send({success: false, checklist: null, message: "Hmm. There does not appear to be a checklist for that credential, if you believe this an error please contact a dev!"}); 
+            }
+        }else{
+            res.send({success: false, checklist: null, message: "We could not verify your user token!"}); 
+        }
+    }else{
+        res.send({success: false, checklist: null, message: "You did not send over your user token and / or credential abbreviation!"});
+    }
 });
 
 
