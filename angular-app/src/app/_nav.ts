@@ -45,7 +45,8 @@ export const navItems: NavData[] = [
     icon: 'fa fa-th-list',
     children: [
       {
-        name: 'Checklists',
+        name: 'View Checklists',
+        url: '/view-checklist',
         icon: 'fa fa-check-square-o'
       },
       {
