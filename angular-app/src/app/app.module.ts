@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
-
+import { HttpClientModule } from '@angular/common/http';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -18,6 +18,7 @@ import { DefaultLayoutComponent } from './containers';
 import { P404Component } from './views/error/404.component';
 import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
+import { RegisterComponent } from './views/register/register.component';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -38,8 +39,6 @@ import { AppRoutingModule } from './app.routing';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { ViewChecklistComponent } from './views/view-checklist/view-checklist.component';
-import { EditChecklistComponent } from './views/edit-checklist/edit-checklist.component';
 
 @NgModule({
   imports: [
@@ -53,7 +52,8 @@ import { EditChecklistComponent } from './views/edit-checklist/edit-checklist.co
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
@@ -61,13 +61,13 @@ import { EditChecklistComponent } from './views/edit-checklist/edit-checklist.co
     P404Component,
     P500Component,
     LoginComponent,
-    ViewChecklistComponent,
-    EditChecklistComponent,
+    RegisterComponent,
   ],
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }],
+  },
+],
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

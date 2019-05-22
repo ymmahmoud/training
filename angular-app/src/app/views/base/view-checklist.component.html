@@ -1,0 +1,35 @@
+<h1>VIEW CHECKLIST WORKS</h1>
+<div class="container" *ngIf="checklist; else no_checklist">
+  <h1>{{checklist.role}}</h1>
+  <div class="section" *ngFor="let section of checklist.sections">
+    <h3>{{section.name}}</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Status</th>
+          <th scope="col">Item</th>
+          <th scope="col">Signed off By</th>
+          <th scope="col">Date</th>
+          <th scope="col">Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <div class="row" *ngFor="let item of section.items">
+          <tr>
+            <td scope="row">{{item.status}}</td>
+            <td>{{item.text}}</td>
+            <td>{{item.trainer == null ? '-' : item.trainer}}</td>
+            <td>{{item.date == null ? '-' : item.date}}</td>
+            <td>{{item.comments == null ? '-' : item.comments}}</td>
+          </tr>
+        </div>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #no_checklist>
+  <div class="alert alert-danger">
+    Hmm something happened when retrieving this checklist. There might not be one made for this credential yet!
+  </div>
+</ng-template>
