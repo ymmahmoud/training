@@ -50,6 +50,11 @@ export const navItems: NavData[] = [
         icon: 'fa fa-check-square-o'
       },
       {
+        name: 'Edit Checklists',
+        url: '/edit-checklist',
+        icon: 'fa fa-pencil-square-o'
+      },
+      {
         name: 'Evaluations',
         icon: 'icon-chart'
       }
@@ -161,28 +166,28 @@ export const navItems: NavData[] = [
   //     }
   //   ]
   // },
-  {
-    name: 'Buttons',
-    url: '/buttons',
-    icon: 'icon-cursor',
-    children: [
-      {
-        name: 'Buttons',
-        url: '/buttons/buttons',
-        icon: 'icon-cursor'
-      },
-      {
-        name: 'Dropdowns',
-        url: '/buttons/dropdowns',
-        icon: 'icon-cursor'
-      },
-      {
-        name: 'Brand Buttons',
-        url: '/buttons/brand-buttons',
-        icon: 'icon-cursor'
-      }
-    ]
-  },
+  // {
+  //   name: 'Buttons',
+  //   url: '/buttons',
+  //   icon: 'icon-cursor',
+  //   children: [
+  //     {
+  //       name: 'Buttons',
+  //       url: '/buttons/buttons',
+  //       icon: 'icon-cursor'
+  //     },
+  //     {
+  //       name: 'Dropdowns',
+  //       url: '/buttons/dropdowns',
+  //       icon: 'icon-cursor'
+  //     },
+  //     {
+  //       name: 'Brand Buttons',
+  //       url: '/buttons/brand-buttons',
+  //       icon: 'icon-cursor'
+  //     }
+  //   ]
+  // },
   // {
   //   name: 'Charts',
   //   url: '/charts',
