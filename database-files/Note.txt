@@ -1,0 +1,4 @@
+Place any .sql files you would like to be populated to the database 
+into this directory. They will be executed in alphabetical order.
+
+Note: you must rebuild your containers for this to take effect.
