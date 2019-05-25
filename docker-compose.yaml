@@ -25,19 +25,19 @@ services:
     depends_on:
     - database
  
-  mongoex:
-    image: mongo-express
-    environment:
-    - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
-    - ME_CONFIG_MONGODB_SERVER=database
-    - ME_CONFIG_MONGODB_PORT=27017
-    - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+  adminer:
+    image: adminer
     ports:
-    - "8081:8081"
+    - "8080:8080"
     links:
     - database
   
   database: # name of the third service
-    image: mongo # specify image to build container from
+    image: mariadb # specify image to build container from
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - MYSQL_DATABASE=training
+    volumes:
+    - ./database-files:/docker-entrypoint-initdb.d
     ports:
-    - "27017:27017" # specify port forwarding
+    - "3306:3306" # specify port forwarding
