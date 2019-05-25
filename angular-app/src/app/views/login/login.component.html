@@ -47,3 +47,10 @@
     </div>
   </main>
 </div>
+
+<p>
+  Welcome to the RPI Ambulance Training Application!
+</p>
+<div id="signinGoogle" *ngIf="!user">
+  <button class="btn btn-block btn-social btn-google" (click)="login()"><span class="fa fa-google"></span>Sign in with Google</button>
+</div>
