@@ -3,6 +3,7 @@ import { AuthService, SocialUser, GoogleLoginProvider} from 'angularx-social-log
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: 'login.component.html'

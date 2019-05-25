@@ -6,6 +6,8 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SocialLoginModule, AuthServiceConfig, GoogleLoginProvider } from 'angularx-social-login';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -66,8 +68,9 @@ export function provideConfig() {
     TabsModule.forRoot(),
     ChartsModule,
     HttpClientModule,
-    SocialLoginModule
-
+    SocialLoginModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   declarations: [
     AppComponent,
@@ -75,7 +78,7 @@ export function provideConfig() {
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent,
+    RegisterComponent
   ],
   providers: [{
     provide: LocationStrategy,
