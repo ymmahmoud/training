@@ -16,4 +16,8 @@ export class UserService {
   createUser(id: string): Observable<any> {
     return this.http.post('http://localhost:3000/user/create', {id});
   }
+
+  getAllUsers() {
+    return this.http.get('http://localhost:3000/user/all');
+  }
 }

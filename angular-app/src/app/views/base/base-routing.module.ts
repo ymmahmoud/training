@@ -13,7 +13,8 @@ import {PopoversComponent} from './popovers.component';
 import {ProgressComponent} from './progress.component';
 import {TooltipsComponent} from './tooltips.component';
 import { ViewChecklistComponent } from './view-checklist.component';
-import { EditChecklistComponent } from './edit-checklist.component'
+import { EditChecklistComponent } from './edit-checklist.component';
+import { UserlistComponent } from './userlist/userlist.component';
 
 const routes: Routes = [
   {
@@ -115,6 +116,13 @@ const routes: Routes = [
         component: EditChecklistComponent,
         data: {
           title: 'Edit Checklist'
+        }
+      },
+      {
+        path: 'userlist',
+        component: UserlistComponent,
+        data: {
+          title: "User List"
         }
       }
     ]
