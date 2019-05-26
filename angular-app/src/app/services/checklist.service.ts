@@ -22,14 +22,14 @@ export class ChecklistService {
     return this.http.post<any>('http://localhost:3000/checklist/user-all', {token: userToken});
   }
 
-  itemStatusToString(status: number) {
+  itemStatusToBadge(status: number) {
     switch(status) {
       case (0):
-        return "Incomplete";
+        return {class: "badge badge-danger", text: "Incomplete"};
       case (1):
-        return "In Progress";
+        return {class: "badge badge-warning", text: "In Progress"};
       case (2):
-        return "Complete";
+        return {class: "badge badge-success", text: "Complete"};
     }
   }
 }

@@ -1,297 +1,49 @@
 <div class="animated fadeIn">
-  <div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-4">
-      <div class="card card-accent-secondary">
-        <div class="card-body">
-          <div class="h1 text-muted mb-4">
-            <div class="h4 mb-0">
-              <small class="text-uppercase font-weight-bold">Attendant</small>
-              <span class="badge badge-danger pull-right">NEEDS OSHA</span>
-            </div>
-          </div>
-          <div class="col-sm-12">
-            <div class="row text-center">
-              <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                <div class="text-muted">Requirements Progress</div>
-                <strong>20% Complete</strong>
-                <div class="progress progress-xs mt-2">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: 20%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="row" *ngFor="let row of rows">
+        <div class="col-sm-12 col-md-6 col-lg-4" *ngFor="let view of row">
+            <div class="card card-accent-secondary">
+                <div class="card-body">
+                    <div class="h1 text-muted mb-4">
+                        <div class="h4 mb-0">
+                            <small class="text-uppercase font-weight-bold">{{view.name}}</small>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="row text-center">
+                            <div class="col-sm-12 col-md mb-sm-2 mb-0">
+                                <div class="text-muted">Requirement Progress</div>
+                                <strong>{{view.progress}}% complete</strong>
+                                <div class="progress progress-xs mt-2">
+                                    <div class="progress-bar bg-success" role="progressbar" [style.width.%]="view.progress" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Requirement</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let section of view.sections">
+                                <td>{{section.name}}</td>
+                                <td>
+                                    <span [class]="section.status.class">{{section.status.text}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br/>
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <button class="btn btn-info text-white" routerLink="/view-checklist/{{view.abbr}}">View Checklist</button>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
         </div>
-        <br />
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Requirement</th>
-                <th>Status</th>
-                <th>Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Checklist Part 1</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Checklist Part 2</td>
-                <td>
-                  <span class="badge badge-danger">Incomplete</span>
-                </td>
-                <td></td>
-
-              </tr>
-              <tr>
-                <td>Cheklist Part 3</td>
-                <td>
-                  <span class="badge badge-warning">In Progress</span>
-                </td>
-                <td></td>
-
-              </tr>
-              <tr>
-                <td>Call Eval</td>
-                <td>
-                  <span class="badge badge-warning">More Required</span>
-                </td>
-                <td>Needs better vitals</td>
-              </tr>
-              <tr>
-                <td>Inventory Check</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-
-        <br>
-        <div class="row text-center">
-          <div class="col-md-12">
-            <button class="btn btn-info text-white">View Checklist</button>
-          </div>
-        </div>
-      </div>
     </div>
-    </div><!--/.col-->
-    <!--/.col-->
-    <div class="col-sm-12 col-md-6 col-lg-4">
-      <div class="card card-accent-secondary">
-        <div class="card-body">
-          <div class="h1 text-muted mb-4">
-            <div class="h4 mb-0">
-              <small class="text-uppercase font-weight-bold">Driver</small>
-              <span class="badge badge-info pull-right">NON-EMERGENCY</span>
-            </div>
-          </div>
-          <div class="col-sm-12">
-            <div class="row text-center">
-              <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                <div class="text-muted">Requirements Progress</div>
-                <strong>40% Complete</strong>
-                <div class="progress progress-xs mt-2">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-        </div>
-        <br />
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Requirement</th>
-                <th>Status</th>
-                <th>Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Checklist Part 1</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Checklist Part 2</td>
-                <td>
-                  <span class="badge badge-danger">Incomplete</span>
-                </td>
-                <td></td>
-
-              </tr>
-              <tr>
-                <td>Cheklist Part 3</td>
-                <td>
-                  <span class="badge badge-warning">In Progress</span>
-                </td>
-                <td></td>
-
-              </tr>
-              <tr>
-                <td>Hours</td>
-                <td>
-                  <span class="badge badge-warning">In Progress</span>
-                </td>
-                <td>3/5 Hours</td>
-              </tr>
-              <tr>
-                <td>Hospital Tour</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Practical</td>
-                <td>
-                  <span class="badge badge-secondary">Not Elligible</span>
-                </td>
-                <td>Prerequisites Not Met</td>
-              </tr>
-            </tbody>
-          </table>
-
-        <br>
-        <div class="row text-center">
-          <div class="col-md-12">
-            <button class="btn btn-info text-white">View Checklist</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div><!--/.col-->
-    <div class="col-sm-12 col-md-6 col-lg-4">
-      <div class="card card-accent-secondary">
-        <div class="card-body">
-          <div class="h1 text-muted mb-4">
-            <div class="h4 mb-0">
-              <small class="text-uppercase font-weight-bold">Crew Chief</small>
-              <span class="badge badge-success pull-right">COMPLETE</span>
-            </div>
-          </div>
-          <div class="col-sm-12">
-            <div class="row text-center">
-              <div class="col-sm-12 col-md mb-sm-2 mb-0">
-                <div class="text-muted">Requirements Progress</div>
-                <strong>100% Complete</strong>
-                <div class="progress progress-xs mt-2">
-                  <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-        </div>
-        <br />
-          <table class="table table-sm">
-            <thead>
-              <tr>
-                <th>Requirement</th>
-                <th>Status</th>
-                <th>Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Checklist Part 1</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Checklist Part 2</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td></td>
-
-              </tr>
-              <tr>
-                <td>Protocols Assessment</td>
-                <td>
-                  <span class="badge badge-success">Pass</span>
-                </td>
-                <td></td>
-
-              </tr>
-              <tr>
-                <td>Call Evaluations</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td>5/5 calls</td>
-              </tr>
-              <tr>
-                <td>Class Evaluation</td>
-                <td>
-                  <span class="badge badge-success">Complete</span>
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>Practical</td>
-                <td>
-                  <span class="badge badge-success">Pass</span>
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-
-        <br>
-        <div class="row text-center">
-          <div class="col-md-12">
-            <button class="btn btn-info text-white">View Checklist</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div><!--/.col-->
-    <!--/.col-->
-  </div>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-4">
-      <div class="card card-accent-secondary">
-        <div class="card-body">
-          <div class="h1 text-muted text-right mb-4">
-            <div class="h4 mb-0">
-              <small class="text-muted text-uppercase font-weigh-bold">Driver Trainer</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-12 col-md-6 col-lg-4">
-      <div class="card card-accent-secondary">
-        <div class="card-body">
-          <div class="h1 text-muted text-right mb-4">
-            <div class="h4 mb-0">
-              <small class="text-muted text-uppercase font-weigh-bold">Crew Chief Trainer</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-    <div class="col-sm-12 col-md-6 col-lg-4">
-      <div class="card card-accent-secondary">
-        <div class="card-body">
-          <div class="h1 text-muted text-right mb-4">
-            <div class="h4 mb-0">
-              <small class="text-muted text-uppercase font-weigh-bold">EES</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!--/.col-->
-  </div>
 </div>
-  <!--/row-->
