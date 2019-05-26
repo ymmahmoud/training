@@ -6,13 +6,13 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 const { pool } = require('./database.js');
-const { verifyToken, createUser, getUserInfo, findUser} = require('./UserFunctions.js');
+const { verifyToken, createUser, getUserInfo, findUser, getAllUsers} = require('./UserFunctions.js');
 const { getChecklistTemplates, updateChecklists, getUserChecklist, getAllUserChecklists } = require ('./ChecklistFunctions.js');
 const { roleNameToAbbr } = require ('./HelperFunctions.js');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// Export the connection information to use elsewhere
-module.exports = { pool };
+
 // Because angular is hosted on a separate server, angular will be hosted together on production run
 var corsOptions = {
     origin: 'http://localhost:4200',
@@ -45,6 +45,11 @@ app.get('/user/info', async (req, res) => {
     }else{
         res.send({success: false, user: null, message: "No id specified!"});
     }
+});
+
+app.get('/user/all', async (req, res) => {
+    const users = await getAllUsers();
+    res.send(users);
 });
 
 app.post('/user/create', async (req, res) => {
