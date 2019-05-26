@@ -7,8 +7,8 @@ const app = express();
 const port = 3000;
 const { pool } = require('./database.js');
 const { verifyToken, createUser, getUserInfo, findUser} = require('./UserFunctions.js');
-const { getChecklistTemplates, updateChecklists, getUserChecklist } = require ('./ChecklistFunctions.js');
-
+const { getChecklistTemplates, updateChecklists, getUserChecklist, getAllUserChecklists } = require ('./ChecklistFunctions.js');
+const { roleNameToAbbr } = require ('./HelperFunctions.js');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // Export the connection information to use elsewhere
@@ -110,6 +110,39 @@ app.post('/checklist/user', async (req, res) => {
     }
 });
 
+
+// Gets all the checklists which the user has
+app.post('/checklist/user-all', async (req, res) => {
+    if(req.body['token']){
+        const user = await verifyToken(req.body.token);
+        if (user) {
+            const userId = (await findUser(user.sub))[0].id;
+            const checklists = await getAllUserChecklists(userId);
+            if (checklists){
+                res.send({success: true, checklists: checklists, message: "Succesfully retrieved checklists!"}); 
+            }else{
+                res.send({success: false, checklists: null, message: "Hmm. There does not appear to be any checklists for that user, if you believe this an error please contact a dev!"}); 
+            }
+        }else{
+            res.send({success: false, checklists: null, message: "We could not verify your user token!"}); 
+        }
+    }else{
+        res.send({success: false, checklists: null, message: "You did not send over your user token and / or credential abbreviation!"});
+    }
+});
+
+app.get('/role/abbreviation', async (req, res) => {
+    if(req.query['name']) {
+        const abbr = await roleNameToAbbr(decodeURIComponent(req.query['name']));
+        if (abbr) {
+            res.send({success:true, abbr: abbr, message: ""});
+        } else {
+            res.send({success:false, abbr: null, message: "No role found!"});
+        }
+    } else {
+        res.send({success:false, abbr: null, message: "No name specified!"});
+    }
+});
 
 app.get('/', (req, res) => res.send('Hello World123!'))
 

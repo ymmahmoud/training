@@ -104,7 +104,7 @@ const routes: Routes = [
         }
       },
       {
-        path: 'view-checklist',
+        path: 'view-checklist/:role',
         component: ViewChecklistComponent,
         data: {
           title: 'View Checklist'

@@ -42,7 +42,7 @@ const getChecklistTemplates = async () => {
     }
 };
 
-createUserChecklists = async (userId) => {
+const createUserChecklists = async (userId) => {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -61,7 +61,7 @@ createUserChecklists = async (userId) => {
     }
 };
 
-updateChecklists = async (credId, itemIds) => {
+const updateChecklists = async (credId, itemIds) => {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -82,7 +82,7 @@ updateChecklists = async (credId, itemIds) => {
     }
 }
 
-getUserChecklist = async (userId, roleAbbr) => {
+const getUserChecklist = async (userId, roleAbbr) => {
     let conn;
     try {
         conn = await pool.getConnection();
@@ -122,4 +122,32 @@ getUserChecklist = async (userId, roleAbbr) => {
     }
 }
 
-module.exports = { getChecklistTemplates, createUserChecklists, updateChecklists, getUserChecklist };
+const getAllUserChecklists = async (userId) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        const query = "SELECT abbr FROM credentials;";
+        const roleAbbreviations = await conn.query(query);
+        // Meta data is pretty useless
+        delete roleAbbreviations.meta;
+        const checklists = [];
+        // For every role we get that user checklist and then place them togehter
+        for (const resp of roleAbbreviations) {
+            const checklist = await getUserChecklist(userId, resp.abbr);
+            // No need for the null checklists to go in
+            if (checklist) checklists.push(checklist);
+        }
+        // This signifies no response
+        if (checklists.length === 0) return null;
+        return checklists;
+    } catch (err) {
+        console.error(err);
+        return null;
+    } finally {
+        if (conn) {
+            conn.end();
+        }
+    }
+}
+
+module.exports = { getChecklistTemplates, createUserChecklists, updateChecklists, getUserChecklist, getAllUserChecklists};
