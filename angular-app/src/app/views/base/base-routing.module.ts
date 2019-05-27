@@ -15,6 +15,7 @@ import {TooltipsComponent} from './tooltips.component';
 import { ViewChecklistComponent } from './view-checklist.component';
 import { EditChecklistComponent } from './edit-checklist.component';
 import { UserlistComponent } from './userlist/userlist.component';
+import { ChecklistmanagerComponent } from './trainer/checklistmanager/checklistmanager.component';
 
 const routes: Routes = [
   {
@@ -123,6 +124,13 @@ const routes: Routes = [
         component: UserlistComponent,
         data: {
           title: "User List"
+        }
+      },
+      {
+        path: 'manage-checklists/:id',
+        component: ChecklistmanagerComponent,
+        data: {
+          title: "Manage Checklists"
         }
       }
     ]

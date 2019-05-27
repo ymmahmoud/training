@@ -132,7 +132,20 @@ app.post('/checklist/user-all', async (req, res) => {
             res.send({success: false, checklists: null, message: "We could not verify your user token!"}); 
         }
     }else{
-        res.send({success: false, checklists: null, message: "You did not send over your user token and / or credential abbreviation!"});
+        res.send({success: false, checklists: null, message: "You did not send over your user token!"});
+    }
+});
+
+app.post('/trainer/checklists', async (req, res) => {
+    if (req.body['id']) {
+        const checklists = await getAllUserChecklists(req.body['id']);
+        if (checklists){
+            res.send({success: true, checklists: checklists, message: "Succesfully retrieved checklists!"}); 
+        }else{
+            res.send({success: false, checklists: null, message: "Hmm. There does not appear to be any checklists for that user, if you believe this an error please contact a dev!"}); 
+        }
+    } else {
+        res.send({success: false, checklists: null, message: "ID not specified!"});
     }
 });
 

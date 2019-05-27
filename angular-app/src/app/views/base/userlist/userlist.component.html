@@ -1,6 +1,6 @@
 <div>
   <input type="text" placeholder="Enter user you're looking for" (keyup)="search($event)"/>
   <div id="users">
-    <button class="btn btn-primary" *ngFor="let user of displayedUsers">{{user.firstName}} {{user.lastName}}</button>
+    <button class="btn btn-primary" *ngFor="let user of displayedUsers" routerLink='/manage-checklists/{{user.id}}'>{{user.firstName}} {{user.lastName}}</button>
   </div>
 </div>

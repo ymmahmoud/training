@@ -47,6 +47,7 @@ import { EditChecklistComponent } from './edit-checklist.component'
 // Components Routing
 import { BaseRoutingModule } from './base-routing.module';
 import { UserlistComponent } from './userlist/userlist.component';
+import { ChecklistmanagerComponent } from './trainer/checklistmanager/checklistmanager.component';
 
 @NgModule({
   imports: [
@@ -77,7 +78,8 @@ import { UserlistComponent } from './userlist/userlist.component';
     TooltipsComponent,
     ViewChecklistComponent,
     EditChecklistComponent,
-    UserlistComponent
+    UserlistComponent,
+    ChecklistmanagerComponent
   ]
 })
 export class BaseModule { }

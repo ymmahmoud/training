@@ -1,23 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { ChecklistService } from '../../services/checklist.service';
-import { HelperService } from '../../services/helper.service';
-import { Checklist } from '../../models/checklist';
+import { ActivatedRoute } from '@angular/router';
+import { TrainerService } from '../../../../services/trainer.service';
+import { HelperService } from '../../../../services/helper.service';
+import { ChecklistService } from '../../../../services/checklist.service';
+import { Checklist } from '../../../../models/checklist';
 
 @Component({
-  templateUrl: 'dashboard.component.html'
+  selector: 'app-checklistmanager',
+  templateUrl: './checklistmanager.component.html',
+  styleUrls: ['./checklistmanager.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class ChecklistmanagerComponent implements OnInit {
   checklists: Checklist[] = [];
   rows: any[] = [];
+  viewedUserId = -1;
 
-  constructor(private checklistService: ChecklistService, private helperService: HelperService) {}
+  constructor(private route: ActivatedRoute, private trainerService: TrainerService, 
+    private helperService: HelperService, private checklistService: ChecklistService) { }
 
-  ngOnInit(): void {
-    this.checklistService.getAllUserChecklists(localStorage.getItem('id_token')).subscribe(async (response) => {
-      this.checklists = response.checklists as Checklist[];
+  ngOnInit() {
+    this.viewedUserId = this.route.snapshot.paramMap.get('id') as unknown as number;
+    this.trainerService.getAllUserChecklists(this.viewedUserId).subscribe(async (checklists) => {
+      this.checklists = checklists.checklists as Checklist[];
       const newViews = await this.createChecklistView(this.checklists);
       let row: any[] = [];
       // Every 3 checklists get put on a new row
@@ -57,6 +61,7 @@ export class DashboardComponent implements OnInit {
       checklistView.progress = (completeCount / itemCount) * 100;
       checklistViews.push(checklistView);
     }
-    return Promise.resolve(checklistViews);
+    return checklistViews;
   }
+
 }
