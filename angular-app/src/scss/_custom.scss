@@ -1,5 +1,5 @@
 // Here you can add other styles
-
+@import 'bootstrap-social.scss';
 
 .app-header {
   height: 100px;
@@ -7,4 +7,8 @@
 
 .sidebar-fixed .app-header + .app-body .sidebar {
   margin-top: 45px;
+}
+
+#logout {
+  margin-right: 10px;
 }
