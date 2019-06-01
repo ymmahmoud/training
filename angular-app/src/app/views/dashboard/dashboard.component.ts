@@ -5,6 +5,7 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import { ChecklistService } from '../../services/checklist.service';
 import { HelperService } from '../../services/helper.service';
 import { Checklist } from '../../models/checklist';
+import { UserService } from '../../services/user.service';
 
 @Component({
   templateUrl: 'dashboard.component.html'
@@ -13,22 +14,25 @@ export class DashboardComponent implements OnInit {
   checklists: Checklist[] = [];
   rows: any[] = [];
 
-  constructor(private checklistService: ChecklistService, private helperService: HelperService) {}
+  constructor(private checklistService: ChecklistService, private helperService: HelperService, private userService: UserService) {
+  }
 
   ngOnInit(): void {
-    this.checklistService.getAllUserChecklists(localStorage.getItem('id_token')).subscribe(async (response) => {
-      this.checklists = response.checklists as Checklist[];
-      const newViews = await this.createChecklistView(this.checklists);
-      let row: any[] = [];
-      // Every 3 checklists get put on a new row
-      for (let i = 0; i < newViews.length; i++) {
-        if (i % 3 === 0 && i !== 0) {
-          this.rows.push(row);
-          row = [];
+    this.userService.getUserIdToken().subscribe((id) => {
+      this.checklistService.getAllUserChecklists(id).subscribe(async (response) => {
+        this.checklists = response.checklists as Checklist[];
+        const newViews = await this.createChecklistView(this.checklists);
+        let row: any[] = [];
+        // Every 3 checklists get put on a new row
+        for (let i = 0; i < newViews.length; i++) {
+          if (i % 3 === 0 && i !== 0) {
+            this.rows.push(row);
+            row = [];
+          }
+          row.push(newViews[i]);
         }
-        row.push(newViews[i]);
-      }
-      this.rows.push(row);
+        this.rows.push(row);
+      });
     });
   }
 

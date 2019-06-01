@@ -46,7 +46,6 @@ export class LoginComponent implements OnInit {
           this.userService.verifyUser(user.idToken).subscribe((verifiedUser) => {
             console.log(verifiedUser);
             if (verifiedUser.success) {
-              localStorage.setItem('id_token', user.idToken);
               // It is okay to "create" the user everytime because if they already exist it just returns them
               this.userService.createUser(verifiedUser.user).subscribe((created) => {
                 this.router.navigate(['/dashboard']);
