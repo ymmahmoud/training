@@ -13,15 +13,13 @@
         </tr>
       </thead>
       <tbody>
-        <div class="row" *ngFor="let item of section.items">
-          <tr>
-            <td><span [class]="checklistService.itemStatusToBadge(item.status).class">{{checklistService.itemStatusToBadge(item.status).text}}</span></td>
-            <td>{{item.text}}</td>
-            <td>{{item.trainer == null ? '-' : item.trainer}}</td>
-            <td>{{item.date == null ? '-' : item.date}}</td>
-            <td>{{item.comments == null ? '-' : item.comments}}</td>
-          </tr>
-        </div>
+        <tr *ngFor="let item of section.items">
+          <td><span [class]="checklistService.itemStatusToBadge(item.status).class">{{checklistService.itemStatusToBadge(item.status).text}}</span></td>
+          <td>{{item.text}}</td>
+          <td>{{item.trainer == null ? '-' : item.trainer}}</td>
+          <td>{{item.date == null ? '-' : item.date}}</td>
+          <td>{{item.comments == null ? '-' : item.comments}}</td>
+        </tr>
       </tbody>
     </table>
   </div>
