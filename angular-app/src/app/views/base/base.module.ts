@@ -44,10 +44,15 @@ import { TooltipsComponent } from './tooltips.component';
 import { ViewChecklistComponent } from './view-checklist.component'
 import { EditChecklistComponent } from './edit-checklist.component'
 
+// Modal
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 // Components Routing
 import { BaseRoutingModule } from './base-routing.module';
 import { UserlistComponent } from './userlist/userlist.component';
 import { ChecklistmanagerComponent } from './trainer/checklistmanager/checklistmanager.component';
+import { SignChecklistComponent } from './trainer/sign-checklist/sign-checklist.component';
+import { SignItemModalComponent } from './trainer/sign-item-modal/sign-item-modal.component';
 
 @NgModule({
   imports: [
@@ -62,6 +67,7 @@ import { ChecklistmanagerComponent } from './trainer/checklistmanager/checklistm
     PopoverModule.forRoot(),
     ProgressbarModule.forRoot(),
     TooltipModule.forRoot(),
+    ModalModule.forRoot(),
     ReactiveFormsModule,
   ],
   declarations: [
@@ -79,7 +85,10 @@ import { ChecklistmanagerComponent } from './trainer/checklistmanager/checklistm
     ViewChecklistComponent,
     EditChecklistComponent,
     UserlistComponent,
-    ChecklistmanagerComponent
-  ]
+    ChecklistmanagerComponent,
+    SignChecklistComponent,
+    SignItemModalComponent
+  ],
+  bootstrap: [SignItemModalComponent]
 })
 export class BaseModule { }

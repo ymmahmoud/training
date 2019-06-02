@@ -30,6 +30,8 @@ export class ChecklistService {
         return {class: "badge badge-warning", text: "In Progress"};
       case (2):
         return {class: "badge badge-success", text: "Complete"};
+      default:
+        return {class:"badge", text: "Unknown"};
     }
   }
 }

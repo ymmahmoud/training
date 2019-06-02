@@ -16,6 +16,7 @@ import { ViewChecklistComponent } from './view-checklist.component';
 import { EditChecklistComponent } from './edit-checklist.component';
 import { UserlistComponent } from './userlist/userlist.component';
 import { ChecklistmanagerComponent } from './trainer/checklistmanager/checklistmanager.component';
+import { SignChecklistComponent } from './trainer/sign-checklist/sign-checklist.component';
 import { AuthGuard } from '../../auth.guard';
 
 const routes: Routes = [
@@ -136,6 +137,14 @@ const routes: Routes = [
         component: ChecklistmanagerComponent,
         data: {
           title: "Manage Checklists"
+        }
+      },
+      {
+        path: 'sign-checklist/:id/:role',
+        canActivate: [AuthGuard],
+        component: SignChecklistComponent,
+        data: {
+          title: "Sign Checklist"
         }
       }
     ]

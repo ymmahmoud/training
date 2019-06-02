@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{title}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="this.bsModalRef.hide();">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div [formGroup]="editItemForm">
+      <div>
+        <label for='name'><strong>Item Name: </strong></label>
+        <p id='name'>{{item.text}}</p>
+      </div>
+      <div>
+        <label for='comments'><strong>Item Status: </strong></label>
+        <select id='comments' formControlName="status">
+          <option value="0">Incomplete</option>
+          <option value="1">In Progress</option>
+          <option value="2">Complete</option>
+        </select>
+      </div>
+      <div>
+        <label for='comments'><strong>Comments: </strong></label>
+        <textarea id='comments' formControlName="comments"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="closeModal()">{{closeBtnName}}</button>
+</div>
