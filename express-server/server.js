@@ -34,16 +34,21 @@ app.post('/user/verify', async (req, res) => {
     }
 });
 
-app.get('/user/info', async (req, res) => {
-    if(req.query['id']){
-        const user = await getUserInfo(req.query['id']);
-        if (user){
-            res.send({success: true, user: user, message: "Info successfully retrieved!"});
-        }else{
-            res.send({success: false, user: null, message: "Unable to retrieve info on user!"});
+app.post('/user/info', async (req, res) => {
+    if(req.body['token']){
+        const verified = await verifyToken(req.body['token']);
+        if (verified) {
+            const user = await getUserInfo(verified.sub);
+            if (user){
+                res.send({success: true, user: user, message: "Info successfully retrieved!"});
+            }else{
+                res.send({success: false, user: null, message: "Unable to retrieve info on user!"});
+            }
+        } else {
+            res.send({success: false, user: null, message: "Unable to verify token!"});
         }
     }else{
-        res.send({success: false, user: null, message: "No id specified!"});
+        res.send({success: false, user: null, message: "No token specified!"});
     }
 });
 
