@@ -31,7 +31,7 @@ export interface NavData {
 
 export const navItems: NavData[] = [
   {
-    name: "Welcome, David",
+    name: "Welcome, USER",
     title: true
   },
   {

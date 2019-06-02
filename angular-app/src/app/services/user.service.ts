@@ -23,6 +23,10 @@ export class UserService {
     return this.http.get('http://localhost:3000/user/all');
   }
 
+  getUserInfo(userToken: string): Observable<any> {
+    return this.http.post('http://localhost:3000/user/info', {token: userToken});
+  }
+
   getUserIdToken() {
     return this.authService.authState.pipe(map((user) => {
       if (user) {
