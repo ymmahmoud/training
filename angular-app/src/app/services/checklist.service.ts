@@ -23,13 +23,14 @@ export class ChecklistService {
   }
 
   itemStatusToBadge(status: number) {
-    switch(status) {
-      case (0):
-        return {class: "badge badge-danger", text: "Incomplete"};
-      case (1):
-        return {class: "badge badge-warning", text: "In Progress"};
-      case (2):
-        return {class: "badge badge-success", text: "Complete"};
+    if (status == 0) {
+      return {class: "badge badge-danger", text: "Incomplete"};
+    } else if (status == 1) {
+      return {class: "badge badge-warning", text: "In Progress"};
+    } else if (status == 2) {
+      return {class: "badge badge-success", text: "Complete"};
+    }else {
+      return {class:"badge", text: "Unknown"};
     }
   }
 }

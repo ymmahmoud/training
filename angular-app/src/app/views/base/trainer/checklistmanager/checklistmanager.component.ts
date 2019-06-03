@@ -58,7 +58,7 @@ export class ChecklistmanagerComponent implements OnInit {
         if (sectionStatus != 0 && sectionStatus != 2) sectionStatus = 1;
         checklistView.sections.push({name: section.name, status: this.checklistService.itemStatusToBadge(sectionStatus)});
       }
-      checklistView.progress = (completeCount / itemCount) * 100;
+      checklistView.progress = ((completeCount / itemCount) * 100).toFixed(2);
       checklistViews.push(checklistView);
     }
     return checklistViews;

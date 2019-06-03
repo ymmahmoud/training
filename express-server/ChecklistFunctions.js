@@ -86,7 +86,7 @@ const getUserChecklist = async (userId, roleAbbr) => {
     let conn;
     try {
         conn = await pool.getConnection();
-        const query = "SELECT checklistItems.text, sections.name as section, credentials.name as credential,\
+        const query = "SELECT checklistItemId as itemId, checklistItems.text, sections.name as section, credentials.name as credential,\
         usersChecklistItems.comments, usersChecklistItems.status, usersChecklistItems.trainer,\
         usersChecklistItems.date FROM usersChecklistItems\
         LEFT JOIN checklistItems ON usersChecklistItems.checklistItemId = checklistItems.id\

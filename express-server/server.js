@@ -6,9 +6,10 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 const { pool } = require('./database.js');
-const { verifyToken, createUser, getUserInfo, findUser, getAllUsers} = require('./UserFunctions.js');
+const { verifyToken, createUser, getUserInfo, findUser, getAllUsers, getUserFullName} = require('./UserFunctions.js');
 const { getChecklistTemplates, updateChecklists, getUserChecklist, getAllUserChecklists } = require ('./ChecklistFunctions.js');
 const { roleNameToAbbr } = require ('./HelperFunctions.js');
+const { signItem } = require('./TrainerFunctions');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -55,6 +56,19 @@ app.post('/user/info', async (req, res) => {
 app.get('/user/all', async (req, res) => {
     const users = await getAllUsers();
     res.send(users);
+});
+
+app.get('/user/fullname', async (req, res) => {
+    if (req.query['id']) {
+        const name = await getUserFullName(req.query['id']);
+        if (name) {
+            res.send({success: true, name: name, message: "Name successfully retrieved!"});
+        }else {
+            res.send({success: false, name: null, message: "Error occured retrieving the name of that user!"}); 
+        }
+    }else {
+        res.send({success: false, name: null, message: "No Id specified!"});
+    }
 });
 
 app.post('/user/create', async (req, res) => {
@@ -141,7 +155,7 @@ app.post('/checklist/user-all', async (req, res) => {
     }
 });
 
-app.post('/trainer/checklists', async (req, res) => {
+app.post('/trainer/user/checklists', async (req, res) => {
     if (req.body['id']) {
         const checklists = await getAllUserChecklists(req.body['id']);
         if (checklists){
@@ -151,6 +165,38 @@ app.post('/trainer/checklists', async (req, res) => {
         }
     } else {
         res.send({success: false, checklists: null, message: "ID not specified!"});
+    }
+});
+
+app.post('/trainer/checklist/signItem', async (req, res) => {
+    if (req.body['token'] && req.body['itemId'] && req.body['status']) {
+        const user = await verifyToken(req.body.token);
+        if (user) {
+            const userId = (await findUser(user.sub))[0].id;
+            const item = await signItem(userId, req.body['itemId'], req.body['status'], req.body['comments']);
+            if (item) {
+                res.send({success: true, item: item, message: "Succesfully modified item!"});
+            } else{
+                res.send({success: false, item: null, message: "Something went wrong editing this item!"});
+            }
+        } else {
+            res.send({success: false, item: null, message: "We could not verify your user token!"}); 
+        }
+    } else {
+        res.send({success: false, item: null, message: "Invalid Post Request please check your parameters!"});
+    }
+});
+
+app.post('/trainer/user/checklist', async (req, res) => {
+    if (req.body['id'] && req.body['role']) {
+        const checklist = await getUserChecklist(req.body['id'], req.body['role']);
+        if (checklist) {
+            res.send({success: true, checklist: checklist, message: "Succesfully retrieved checklist!"}); 
+        } else {
+            res.send({success: false, checklist: null, message: "Hmm. There does not appear to be a checklist for that user + role, if you believe this an error please contact a dev!"}); 
+        }
+    } else {
+        res.send({success: false, checklist: null, message: "ID and/or Role not specified!"});
     }
 });
 
