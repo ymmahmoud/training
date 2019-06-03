@@ -39,6 +39,7 @@ export class EditChecklistComponent implements OnInit {
       items: this.fb.array([this.fb.control('', Validators.required)])
     });
     (this.createChecklistForm.controls.sections as FormArray).push(section);
+    const control = new FormControl(section.length, Validators.min(1));
   }
   // Adds an item to the section based on index
   addItem(index: number): void {

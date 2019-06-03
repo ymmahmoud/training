@@ -1,20 +1,21 @@
-<div class="container">
-  <div class="alert alert-danger" role="alert" *ngIf="error !== undefined">
-    {{error}}
-  </div>
-  <div class="row justify-content-center">
-    <div class="card col-6">
-        <img class="card-img-top" src="../../../assets/img/brand/logo.svg" alt="RPIA Logo" *ngIf="error == undefined"/>
-        <div class="card-body">
-          <h5 class="card-title">RPIA Training Management System Login</h5>
-          <p class="card-text">
-            Welcome to RPIA's Training Management System. Please loign with a valid
-            @rpiambulance.com email address below to view all yor training records.
-          </p>
-          <div id="signinGoogle">
-            <button class="btn btn-block btn-social btn-google" (click)="login()"><span class="fa fa-google"></span>Sign in with Google</button>
-          </div>
-        </div>
+<div class="jumbotron vertical-center"><div class="container">
+      <div class="alert alert-danger" role="alert" *ngIf="error !== undefined">
+        {{error}}
       </div>
-  </div>
+      <div class="row justify-content-center">
+        <div class="card col-6">
+            <img class="card-img-top" src="../../../assets/img/brand/logo.svg" alt="RPIA Logo" *ngIf="error == undefined"/>
+            <div class="card-body">
+              <h5 class="card-title">RPIA Training Management System Login</h5>
+              <p class="card-text">
+                Welcome to RPIA's Training Management System. Please loign with a valid
+                @rpiambulance.com email address below to view your training records.
+              </p>
+              <div id="signinGoogle">
+                <button class="btn btn-block btn-social btn-google" (click)="login()"><span class="fa fa-google"></span>Sign in with Google</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
 </div>
