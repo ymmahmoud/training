@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: 'login.component.html'
-
+  templateUrl: 'login.component.html',
+  styleUrls: ['./login.component.scss']
 })
 
 
