@@ -19,14 +19,14 @@
         <div class="input-group">
             <input class="form-control form-control-lg rounded" [formControl]="section.controls.title" type="text" placeholder="Section Title" required/>
             <span class="input-group-btn">
-                <button type="button" class="btn btn-danger btn-lg" (click)="removeSection(i)">Remove Section</button>
+                <button *ngIf="createChecklistForm.get('sections').controls[1]!=undefined" type="button" class="btn btn-danger btn-lg" (click)="removeSection(i)">Remove Section</button>
             </span>
           </div>
         <div *ngFor="let item of section.get('items').controls; let j = index;" class="subForm">
             <div class="input-group">
                 <input class="form-control form-control rounded" [formControl]="item" type="text" placeholder="Item Name" required/>
                 <span class="input-group-btn">
-                    <button type="button" class="btn btn-danger" (click)="removeItem(i,j)">X</button>
+                    <button *ngIf="section.get('items').controls[1]!=undefined" type="button" class="btn btn-danger" (click)="removeItem(i,j)">X</button>
                 </span>
             </div>
         </div>
