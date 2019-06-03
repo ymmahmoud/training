@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 const { pool } = require('./database.js');
-const { verifyToken, createUser, getUserInfo, findUser, getAllUsers} = require('./UserFunctions.js');
+const { verifyToken, createUser, getUserInfo, findUser, getAllUsers, getUserFullName} = require('./UserFunctions.js');
 const { getChecklistTemplates, updateChecklists, getUserChecklist, getAllUserChecklists } = require ('./ChecklistFunctions.js');
 const { roleNameToAbbr } = require ('./HelperFunctions.js');
 const { signItem } = require('./TrainerFunctions');
@@ -56,6 +56,19 @@ app.post('/user/info', async (req, res) => {
 app.get('/user/all', async (req, res) => {
     const users = await getAllUsers();
     res.send(users);
+});
+
+app.get('/user/fullname', async (req, res) => {
+    if (req.query['id']) {
+        const name = await getUserFullName(req.query['id']);
+        if (name) {
+            res.send({success: true, name: name, message: "Name successfully retrieved!"});
+        }else {
+            res.send({success: false, name: null, message: "Error occured retrieving the name of that user!"}); 
+        }
+    }else {
+        res.send({success: false, name: null, message: "No Id specified!"});
+    }
 });
 
 app.post('/user/create', async (req, res) => {

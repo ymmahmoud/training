@@ -35,7 +35,12 @@ export class SignItemModalComponent implements OnInit {
       // If they don't change anything we don't update
       if (this.item.status != oldStatus || this.item.comments != oldComments) {
         const resp = await this.trainerService.signItem(token, this.item).toPromise();
-        console.log(resp);
+        if (this.item.status != 0) {
+          const trainer = await this.userService.getUserInfo(token).toPromise();
+          this.item.trainer = trainer.user.name.fullName;
+        }else {
+          this.item.trainer = null;
+        }
       }
       this.bsModalRef.hide();
     });

@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of section.items; let j = index" (click)="editItem(i, j)">
-            <td><span [class]="checklistService.itemStatusToBadge(item.status).class">{{item.status}}</span></td>
+            <td><span [class]="checklistService.itemStatusToBadge(item.status).class">{{checklistService.itemStatusToBadge(item.status).text}}</span></td>
             <td>{{item.text}}</td>
             <td>{{item.trainer == null ? '-' : item.trainer}}</td>
             <td>{{item.date == null ? '-' : item.date}}</td>

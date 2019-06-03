@@ -27,6 +27,12 @@ export class UserService {
     return this.http.post('http://localhost:3000/user/info', {token: userToken});
   }
 
+  getUserFullName(userId: number): Observable<string> {
+    return this.http.get<any>(`http://localhost:3000/user/fullname?id=${userId}`).pipe(map((res) => {
+      return res.name;
+    }));
+  }
+
   getUserIdToken() {
     return this.authService.authState.pipe(map((user) => {
       if (user) {

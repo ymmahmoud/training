@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChecklistService } from '../../../../services/checklist.service';
 import { TrainerService } from '../../../../services/trainer.service';
+import { UserService } from '../../../../services/user.service';
 import { Checklist } from '../../../../models/checklist';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import {SignItemModalComponent} from '../sign-item-modal/sign-item-modal.component';
@@ -19,7 +20,8 @@ export class SignChecklistComponent implements OnInit {
   constructor(private route: ActivatedRoute, 
     private trainerService: TrainerService,
     private modalService: BsModalService,
-    private checklistService: ChecklistService) { 
+    private checklistService: ChecklistService,
+    private userService: UserService) { 
     }
 
   ngOnInit() {
@@ -28,7 +30,13 @@ export class SignChecklistComponent implements OnInit {
     this.trainerService.getUserChecklist(viewedUserId, viewedRole).subscribe((resp) => {
       if (resp.success) {
         this.checklist = resp.checklist;
-        console.log(this.checklist);
+        for (const section of this.checklist.sections) {
+          for (const item of section.items) {
+            if (item.trainer) {
+              this.userService.getUserFullName(item.trainer).subscribe((name) => item.trainer = name);
+            }
+          }
+        }
       }
     });
   }

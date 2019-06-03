@@ -91,4 +91,24 @@ const getAllUsers = async() => {
     }
 };
 
-module.exports = { verifyToken, createUser, findUser, getUserInfo, getAllUsers};
+const getUserFullName = async(userId) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        let googleId = await conn.query("SELECT googleUserId FROM users where id=?", userId);
+        delete googleId.meta;
+        if(googleId.length == 0) return null;
+        googleId = googleId[0].googleUserId;
+        const user = await getUserInfo(googleId);
+        return user.name.fullName;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }finally {
+        if (conn) {
+            conn.end();
+        }
+    }
+}
+
+module.exports = { verifyToken, createUser, findUser, getUserInfo, getAllUsers, getUserFullName};

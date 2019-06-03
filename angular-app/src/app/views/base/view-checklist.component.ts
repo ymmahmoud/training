@@ -18,7 +18,13 @@ export class ViewChecklistComponent implements OnInit {
     this.userService.getUserIdToken().subscribe((id) => {
       this.checklistService.getUserChecklist(id, this.role).subscribe((retrievedChecklist) => {
         this.checklist = retrievedChecklist.checklist;
-        console.log(this.checklist);
+        for (const section of this.checklist.sections) {
+          for (const item of section.items) {
+            if (item.trainer) {
+              this.userService.getUserFullName(item.trainer).subscribe((name) => item.trainer = name);
+            }
+          }
+        }
       });
     });
    }
